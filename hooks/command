@@ -2,20 +2,17 @@
 
 set -euo pipefail
 
-DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+echo "--- Installing/upgrading amp"
 
-# shellcheck source=lib/plugin.bash
-. "$DIR/../lib/plugin.bash"
-
-MANDATORY_OPTION=$(plugin_read_config MANDATORY "")
-
-if [ -z "${MANDATORY_OPTION}" ]; then
-  echo 'Missing mandatory option in the plugin'
-  exit 1
+# Check if amp is installed
+if ! command -v amp &> /dev/null; then
+  echo "amp not found, installing..."
+  npm install -g @sourcegraph/amp
+else
+  echo "amp found, checking for updates..."
+  npm upgrade -g @sourcegraph/amp
 fi
 
-OPTIONAL_OPTION=$(plugin_read_config OPTIONAL "default")
+echo "+++ Running amp"
 
-echo "Running plugin with options:"
-echo " - mandatory: ${MANDATORY_OPTION}"
-echo " - optional: ${OPTIONAL_OPTION}"
+amp <<<"${BUILDKITE_PLUGIN_AMP_PROMPT}"

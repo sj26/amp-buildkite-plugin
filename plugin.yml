@@ -1,14 +1,12 @@
-name: Buildkite Plugin
-description: Exceptional functionality
-author: https://github.com/buildkite-plugins
+name: Amp Buildkite Plugin
+description: Run Amp on Buildkite
+author: https://github.com/sj26
 requirements:
   - bash
 configuration:
   properties:
-    mandatory:
-      type: string
-    optional:
+    prompt:
       type: string
   required:
-    - mandatory
+    - prompt
   additionalProperties: false
